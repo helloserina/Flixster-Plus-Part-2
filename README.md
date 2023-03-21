@@ -30,7 +30,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://drive.google.com/file/d/1WxcK0soICQEs0X64CXHibpe1JOdiAE6i/view?usp=sharing' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://drive.google.com/file/d/1WxcK0soICQEs0X64CXHibpe1JOdiAE6i' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with Kap
@@ -44,7 +44,7 @@ GIF created with Kap
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2023] [Serina Khanna]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
