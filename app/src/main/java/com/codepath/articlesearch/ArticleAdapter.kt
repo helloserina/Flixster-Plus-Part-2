@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 const val ARTICLE_EXTRA = "ARTICLE_EXTRA"
 private const val TAG = "ArticleAdapter"
 
-class ArticleAdapter(private val context: Context, private val articles: List<Article>) :
+class ArticleAdapter(private val context: Context, private val peopleList: List<Person>) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,38 +22,39 @@ class ArticleAdapter(private val context: Context, private val articles: List<Ar
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val article = articles[position]
+        val article = peopleList[position]
         holder.bind(article)
     }
 
-    override fun getItemCount() = articles.size
+    override fun getItemCount() = peopleList.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-
-        private val mediaImageView = itemView.findViewById<ImageView>(R.id.mediaImage)
-        private val titleTextView = itemView.findViewById<TextView>(R.id.mediaTitle)
-        private val abstractTextView = itemView.findViewById<TextView>(R.id.mediaAbstract)
+        private val mediaImageView = itemView.findViewById<ImageView>(R.id.personImage)
+        private val nameTextView = itemView.findViewById<TextView>(R.id.personName)
+        private val departmentTextView = itemView.findViewById<TextView>(R.id.personDepartment)
+        private val popularityTextView = itemView.findViewById<TextView>(R.id.personPopularity)
 
         init {
             itemView.setOnClickListener(this)
         }
 
         // Write a helper method to help set up the onBindViewHolder method
-        fun bind(article: Article) {
-            titleTextView.text = article.headline?.main
-            abstractTextView.text = article.abstract
+        fun bind(person: Person) {
+            nameTextView.text = person.name
+            popularityTextView.text = person.popularity.toString()
+            departmentTextView.text = person.known_for_department
 
             Glide.with(context)
-                .load(article.mediaImageUrl)
+                .load(person.profileImageUrl)
                 .into(mediaImageView)
         }
 
         override fun onClick(v: View?) {
-            // Get selected article
-            val article = articles[absoluteAdapterPosition]
+            // Get selected person
+            val article = peopleList[absoluteAdapterPosition]
 
-            //  Navigate to Details screen and pass selected article
+            //  Navigate to Details screen and pass selected person
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra(ARTICLE_EXTRA, article)
             context.startActivity(intent)

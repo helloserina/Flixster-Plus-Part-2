@@ -22,28 +22,30 @@ fun createJson() = Json {
 private const val TAG = "MainActivity/"
 private const val SEARCH_API_KEY = BuildConfig.API_KEY
 private const val ARTICLE_SEARCH_URL =
-    "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${SEARCH_API_KEY}"
+    "https://api.themoviedb.org/3/person/popular?api_key=${SEARCH_API_KEY}"+"&language=en-US&page=1"
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var articlesRecyclerView: RecyclerView
+    private lateinit var peopleRecyclerView: RecyclerView
     private lateinit var binding: ActivityMainBinding
-    private val articles = mutableListOf<Article>()
+    private val peopleList = mutableListOf<Person>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // inflates the layout and binds to main
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        articlesRecyclerView = findViewById(R.id.articles)
-        // TODO: Set up ArticleAdapter with articles
-        val articleAdapter = ArticleAdapter(this, articles)
-        articlesRecyclerView.adapter = articleAdapter
+        // sets up recycler view for people and sets to adapter (where adapter will feed vals)
+        peopleRecyclerView = findViewById(R.id.people)
+        val articleAdapter = ArticleAdapter(this, peopleList)
+        peopleRecyclerView.adapter = articleAdapter
 
-        articlesRecyclerView.layoutManager = LinearLayoutManager(this).also {
+
+        peopleRecyclerView.layoutManager = LinearLayoutManager(this).also {
             val dividerItemDecoration = DividerItemDecoration(this, it.orientation)
-            articlesRecyclerView.addItemDecoration(dividerItemDecoration)
+            peopleRecyclerView.addItemDecoration(dividerItemDecoration)
         }
 
         val client = AsyncHttpClient()
@@ -54,20 +56,20 @@ class MainActivity : AppCompatActivity() {
                 response: String?,
                 throwable: Throwable?
             ) {
-                Log.e(TAG, "Failed to fetch articles: $statusCode")
+                Log.e(TAG, "Failed to fetch people: $statusCode")
             }
 
             override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
-                Log.i(TAG, "Successfully fetched articles: $json")
+                Log.i(TAG, "Successfully fetched people: $json")
                 try {
                     // Do something with the returned json (contains article information)
                     val parsedJson = createJson().decodeFromString(
-                        SearchNewsResponse.serializer(),
+                        SearchResponse.serializer(),
                         json.jsonObject.toString()
                     )
                     // Save the articles
-                    parsedJson.response?.docs?.let { list ->
-                        articles.addAll(list)
+                    parsedJson.results?.let { list ->
+                        peopleList.addAll(list)
                         // Reload the screen
                         articleAdapter.notifyDataSetChanged()
                     }
